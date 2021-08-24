@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cl_weather_app/common/ui/app_colors.dart';
+import 'package:flutter/material.dart';
 
 class AppTextStyles {
   static const _text = TextStyle(
@@ -15,6 +15,7 @@ class AppTextStyles {
   // Regular
   static TextStyle regularTextStyle = _text.copyWith(
     fontWeight: FontWeight.normal,
+    fontSize: 18,
   );
 
   // Medium
@@ -25,5 +26,6 @@ class AppTextStyles {
   // Bold
   static TextStyle boldTextStyle = _text.copyWith(
     fontWeight: FontWeight.bold,
+    fontSize: 32,
   );
 }
