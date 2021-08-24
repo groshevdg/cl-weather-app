@@ -28,14 +28,8 @@ class WeatherPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SvgPicture.asset(asset, width: 20, color: AppColors.iconOverlay),
-          Text(
-            title,
-            style: const TextStyle(color: AppColors.iconOverlay),
-          ),
-          Text(
-            value,
-            style: const TextStyle(color: AppColors.iconOverlay),
-          ),
+          Text(title, style: const TextStyle(color: AppColors.iconOverlay)),
+          Text(value, style: const TextStyle(color: AppColors.iconOverlay)),
         ],
       ),
     );

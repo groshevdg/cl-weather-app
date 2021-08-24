@@ -19,6 +19,8 @@ dependencies:
   get_it: 7.2.0
   shimmer: 2.0.0
   flutter_svg: 0.22.0
+  permission_handler: 8.1.4+2
+  geolocator: 7.4.0
 
 dev_dependencies:
   flutter_test:
