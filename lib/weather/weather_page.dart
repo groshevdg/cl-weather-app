@@ -28,24 +28,32 @@ class WeatherPage extends StatelessWidget {
   }
 
   Widget _additionalInfoWidget({
-    required double width,
     required String asset,
     required String title,
     required String value,
   }) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
       decoration: const BoxDecoration(
         color: AppColors.containerBackground,
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
-      height: width * 1.9,
-      width: width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SvgPicture.asset(asset, width: 20, color: AppColors.iconOverlay),
-          Text(title, style: const TextStyle(color: AppColors.iconOverlay)),
-          Text(value, style: const TextStyle(color: AppColors.iconOverlay)),
+          SvgPicture.asset(asset, width: 25, color: AppColors.iconOverlay),
+          Text(
+            title,
+            style: const TextStyle(
+              color: AppColors.iconOverlay,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Text(
+            value,
+            style: const TextStyle(color: AppColors.iconOverlay, fontSize: 13),
+          ),
         ],
       ),
     );
@@ -61,33 +69,25 @@ class WeatherPage extends StatelessWidget {
     );
   }
 
-  Widget _verticalDivider() {
-    return Container(
-      width: 1.5,
-      color: AppColors.iconOverlay,
-      height: 40,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<WeatherBloc, WeatherState>(
-        listener: _blocListener,
-        builder: (context, state) => Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          width: double.infinity,
-          height: double.infinity,
-          decoration:
-              const BoxDecoration(gradient: AppColors.backgroundGradient),
-          child: SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.16,
-                  ),
-                  child: state.status == WeatherStatus.initial
+      body: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+        child: BlocConsumer<WeatherBloc, WeatherState>(
+          listener: _blocListener,
+          builder: (context, state) => Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: AppColors.backgroundGradient,
+            ),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  const Spacer(),
+                  state.status == WeatherStatus.initial
                       ? Shimmer.fromColors(
                           baseColor: AppColors.containerBackground,
                           highlightColor: AppColors.iconOverlay,
@@ -100,21 +100,18 @@ class WeatherPage extends StatelessWidget {
                           state.weatherInfo.city ?? 'Unknown',
                           style: AppTextStyles.boldTextStyle,
                         ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Text(
+                  const SizedBox(height: 8),
+                  Text(
                     '${state.weatherInfo.currentTemp}°',
                     style: AppTextStyles.boldTextStyle.copyWith(fontSize: 80),
                   ),
-                ),
-                Text(
-                  state.weatherInfo.weatherDescription,
-                  style: AppTextStyles.regularTextStyle,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Row(
+                  const SizedBox(height: 8),
+                  Text(
+                    state.weatherInfo.weatherDescription,
+                    style: AppTextStyles.regularTextStyle,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -128,56 +125,57 @@ class WeatherPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height * 0.06,
-                  ),
-                  child: Row(
+                  const SizedBox(height: 30),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _mainInfoRowItem(
                         title: 'Humidity',
                         value: '${state.weatherInfo.humidity}%',
                       ),
-                      _verticalDivider(),
+                      Container(
+                        width: 1.5,
+                        color: AppColors.iconOverlay,
+                        height: 40,
+                      ),
                       _mainInfoRowItem(
                         title: 'Visibility',
                         value: '${state.weatherInfo.visibility} km',
                       ),
                     ],
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _additionalInfoWidget(
-                      width: MediaQuery.of(context).size.width / 6,
-                      asset: AppAssets.sunrise,
-                      title: 'Sunrise',
-                      value: state.weatherInfo.sunrise.format(context),
+                  const SizedBox(height: 30),
+                  Expanded(
+                    child: GridView.count(
+                      childAspectRatio: 0.75,
+                      crossAxisCount: 4,
+                      children: [
+                        _additionalInfoWidget(
+                          asset: AppAssets.sunrise,
+                          title: 'Sunrise',
+                          value: state.weatherInfo.sunrise.format(context),
+                        ),
+                        _additionalInfoWidget(
+                          asset: AppAssets.wind,
+                          title: 'Wind',
+                          value: '${state.weatherInfo.wind} m/s',
+                        ),
+                        _additionalInfoWidget(
+                          asset: AppAssets.pressure,
+                          title: 'Pressure',
+                          value: state.weatherInfo.pressure,
+                        ),
+                        _additionalInfoWidget(
+                          asset: AppAssets.sunset,
+                          title: 'Sunset',
+                          value: state.weatherInfo.sunset.format(context),
+                        )
+                      ],
                     ),
-                    _additionalInfoWidget(
-                      width: MediaQuery.of(context).size.width / 6,
-                      asset: AppAssets.wind,
-                      title: 'Wind',
-                      value: '${state.weatherInfo.wind} m/s',
-                    ),
-                    _additionalInfoWidget(
-                      width: MediaQuery.of(context).size.width / 6,
-                      asset: AppAssets.pressure,
-                      title: 'Pressure',
-                      value: state.weatherInfo.pressure,
-                    ),
-                    _additionalInfoWidget(
-                      width: MediaQuery.of(context).size.width / 6,
-                      asset: AppAssets.sunset,
-                      title: 'Sunset',
-                      value: state.weatherInfo.sunset.format(context),
-                    )
-                  ],
-                )
-              ],
+                  ),
+                  const Spacer(),
+                ],
+              ),
             ),
           ),
         ),
