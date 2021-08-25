@@ -11,6 +11,22 @@ import 'package:shimmer/shimmer.dart';
 class WeatherPage extends StatelessWidget {
   const WeatherPage({Key? key}) : super(key: key);
 
+  void _blocListener(BuildContext context, WeatherState state) {
+    if (state.status == WeatherStatus.locationDisabled) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Enable location service to get weather info'),
+        ),
+      );
+    } else if (state.status == WeatherStatus.error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('An error happened while loading data'),
+        ),
+      );
+    }
+  }
+
   Widget _additionalInfoWidget({
     required double width,
     required String asset,
@@ -56,7 +72,8 @@ class WeatherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<WeatherBloc, WeatherState>(
+      body: BlocConsumer<WeatherBloc, WeatherState>(
+        listener: _blocListener,
         builder: (context, state) => Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           width: double.infinity,
@@ -70,32 +87,45 @@ class WeatherPage extends StatelessWidget {
                   padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.16,
                   ),
-                  child: Shimmer.fromColors(
-                    baseColor: AppColors.containerBackground,
-                    highlightColor: AppColors.iconOverlay,
-                    enabled: state.status == WeatherStatus.initial,
-                    child: Text(
-                      'Searching...',
-                      style: AppTextStyles.boldTextStyle,
-                    ),
-                  ),
+                  child: state.status == WeatherStatus.initial
+                      ? Shimmer.fromColors(
+                          baseColor: AppColors.containerBackground,
+                          highlightColor: AppColors.iconOverlay,
+                          child: Text(
+                            'Searching...',
+                            style: AppTextStyles.boldTextStyle,
+                          ),
+                        )
+                      : Text(
+                          state.weatherInfo.city ?? 'Unknown',
+                          style: AppTextStyles.boldTextStyle,
+                        ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Text(
-                    '0',
+                    '${state.weatherInfo.currentTemp}°',
                     style: AppTextStyles.boldTextStyle.copyWith(fontSize: 80),
                   ),
                 ),
-                Text('Cloudy', style: AppTextStyles.regularTextStyle),
+                Text(
+                  state.weatherInfo.weatherDescription,
+                  style: AppTextStyles.regularTextStyle,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('H: 0', style: AppTextStyles.regularTextStyle),
+                      Text(
+                        'H: ${state.weatherInfo.maxTemp}°',
+                        style: AppTextStyles.regularTextStyle,
+                      ),
                       const SizedBox(width: 8),
-                      Text('M: 0', style: AppTextStyles.regularTextStyle),
+                      Text(
+                        'M: ${state.weatherInfo.minTemp}°',
+                        style: AppTextStyles.regularTextStyle,
+                      ),
                     ],
                   ),
                 ),
@@ -106,9 +136,15 @@ class WeatherPage extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _mainInfoRowItem(title: 'Humidity', value: '0%'),
+                      _mainInfoRowItem(
+                        title: 'Humidity',
+                        value: '${state.weatherInfo.humidity}%',
+                      ),
                       _verticalDivider(),
-                      _mainInfoRowItem(title: 'Visibility', value: '0'),
+                      _mainInfoRowItem(
+                        title: 'Visibility',
+                        value: '${state.weatherInfo.visibility} km',
+                      ),
                     ],
                   ),
                 ),
@@ -119,25 +155,25 @@ class WeatherPage extends StatelessWidget {
                       width: MediaQuery.of(context).size.width / 6,
                       asset: AppAssets.sunrise,
                       title: 'Sunrise',
-                      value: '0',
+                      value: state.weatherInfo.sunrise.format(context),
                     ),
                     _additionalInfoWidget(
                       width: MediaQuery.of(context).size.width / 6,
                       asset: AppAssets.wind,
                       title: 'Wind',
-                      value: '0',
+                      value: '${state.weatherInfo.wind} m/s',
                     ),
                     _additionalInfoWidget(
                       width: MediaQuery.of(context).size.width / 6,
-                      asset: AppAssets.rain,
-                      title: 'Rain',
-                      value: '0',
+                      asset: AppAssets.pressure,
+                      title: 'Pressure',
+                      value: state.weatherInfo.pressure,
                     ),
                     _additionalInfoWidget(
                       width: MediaQuery.of(context).size.width / 6,
                       asset: AppAssets.sunset,
                       title: 'Sunset',
-                      value: '0',
+                      value: state.weatherInfo.sunset.format(context),
                     )
                   ],
                 )

@@ -21,6 +21,7 @@ dependencies:
   flutter_svg: 0.22.0
   permission_handler: 8.1.4+2
   geolocator: 7.4.0
+  json_annotation: 4.0.1
 
 dev_dependencies:
   flutter_test:
@@ -29,6 +30,8 @@ dev_dependencies:
   bloc_test: 8.1.0
   lints: 1.0.1
   mockito: 5.0.13
+  build_runner: 2.0.0
+  json_serializable: 4.1.1
 
 flutter:
   uses-material-design: true

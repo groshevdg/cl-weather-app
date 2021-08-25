@@ -1,10 +1,11 @@
 import 'package:cl_weather_app/common/bloc/error_handler_bloc/error_handler_bloc.dart';
 import 'package:cl_weather_app/common/di/injector.dart';
 import 'package:cl_weather_app/common/routes.dart';
-import 'package:cl_weather_app/weather/bloc/location_repository.dart';
+import 'package:cl_weather_app/weather/bloc/repositories/city_repository.dart';
+import 'package:cl_weather_app/weather/bloc/repositories/location_repository.dart';
+import 'package:cl_weather_app/weather/bloc/repositories/weather_repository.dart';
 import 'package:cl_weather_app/weather/bloc/weather_bloc.dart';
 import 'package:cl_weather_app/weather/bloc/weather_event.dart';
-import 'package:cl_weather_app/weather/bloc/weather_repository.dart';
 import 'package:cl_weather_app/weather/weather_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,10 +20,11 @@ class RoutesFactory {
             providers: [
               BlocProvider(
                 create: (context) => WeatherBloc(
-                  errorHandlerBloc: context.read<ErrorHandlerBloc>(),
-                  weatherRepository: getIt<WeatherRepository>(),
-                  locationRepository: getIt<LocationRepository>(),
-                )..add(WeatherInitialed()),
+                    errorHandlerBloc: context.read<ErrorHandlerBloc>(),
+                    weatherRepository: getIt<WeatherRepository>(),
+                    locationRepository: getIt<LocationRepository>(),
+                    cityRepository: getIt<CityRepository>())
+                  ..add(WeatherInitialed()),
               ),
             ],
             child: const AnnotatedRegion<SystemUiOverlayStyle>(
