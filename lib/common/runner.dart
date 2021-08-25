@@ -8,11 +8,11 @@ import 'package:flutter/services.dart';
 Future<void> run() async {
   WidgetsFlutterBinding.ensureInitialized();
   Injector().configure();
+
   await SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
 
-  _initLogger();
   _runApp();
 }
 
@@ -22,5 +22,3 @@ void _runApp() {
     (object, stackTrace) {},
   );
 }
-
-void _initLogger() {}
