@@ -13,7 +13,7 @@ void main() {
   late CityRepository cityRepository;
 
   final response = Response(
-    requestOptions: RequestOptions(path: Api.cityName('10.0', '10.0')),
+    requestOptions: RequestOptions(path: Api.cityName('10.0', '10.0', '')),
     data: <String, dynamic>{
       'addresses': [
         <String, dynamic>{
@@ -24,7 +24,7 @@ void main() {
   );
 
   final notValidResponse = Response(
-    requestOptions: RequestOptions(path: Api.cityName('10.0', '10.0')),
+    requestOptions: RequestOptions(path: Api.cityName('10.0', '10.0', '')),
     data: <String, dynamic>{
       'addresses': [
         <String, dynamic>{
@@ -41,7 +41,7 @@ void main() {
     });
 
     test('Check successful response', () async {
-      when(dio.get<Map<String, dynamic>>(Api.cityName('10.0', '10.0')))
+      when(dio.get<Map<String, dynamic>>(Api.cityName('10.0', '10.0', '')))
           .thenAnswer((_) async => response);
 
       final city = await cityRepository.getCityNameByPosition('10.0', '10.0');
@@ -50,7 +50,7 @@ void main() {
     });
 
     test("Check city didn't found", () async {
-      when(dio.get<Map<String, dynamic>>(Api.cityName('10.0', '10.0')))
+      when(dio.get<Map<String, dynamic>>(Api.cityName('10.0', '10.0', '')))
           .thenAnswer((_) async => notValidResponse);
 
       final city = await cityRepository.getCityNameByPosition('10.0', '10.0');
