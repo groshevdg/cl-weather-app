@@ -1,26 +1,8 @@
-# Запуск приложения
+# Run the app
   
-К примеру у нас три окружения: dev, stage и production. Тогда файловая структура должна быть следующая:  
+To run this app you need to complete this steps:
+1. flutter pub get
+1. flutter pub run build_runner build
+1. flutter run
 
-**Production - main.dart**
-
-Запуск:   
-```bash  
-flutter run -t lib/main.dart  
-```  
-**Stage - main_stage.dart**
-
-Запуск:   
-```bash  
-flutter run -t lib/main_stage.dart  
-```  
-  
-**Dev - main_dev.dart**
-
-Запуск:   
-```bash  
-flutter run -t lib/main_dev.dart  
-```  
-  
-**Важно:**
-Каждый файл должен включать в себя конфигурацию специфичную для окружения. Допускается ее объявление только в этих файлах.
+To run tests use: flutter test

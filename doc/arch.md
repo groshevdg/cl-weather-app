@@ -1,13 +1,16 @@
-# Архитектура
+# Architecture
 
-Важные ссылки для ознакомления:
-1. [Документация Flutter Bloc](https://bloclibrary.dev/#/gettingstarted)
+Important links:
+1. [Flutter Bloc Docs](https://bloclibrary.dev/#/gettingstarted)
 1. [Naming convention](https://bloclibrary.dev/#/blocnamingconventions)
 
-В данном шаблоне используется менеджер состояний Bloc с несколькими изменениями:
-1. Мы не используем слой провайдеров, используются только репозитории.
-1. Мы не используем Mocktail, используем подход с Mockito и кодогенерацией
-1. Не делаем один блок на несколько страниц, для обмена данными между блоками используем репозитории или передача через конструктор
-1. Исключение для блоков на несколько страниц - обработчик ошибок и другие заранее оговоренные кейсы
+This app contains the single module - weather module. It consists the page, its bloc and its models. There is a test package thata contains tests on repositories and bloc flow.
 
-По структуре мы стараемся дробить функционал на логические блоки и преследуем цель - на одну страницу, один блок.
+There are 3 types of repositories, which uses for different actions:
+1. LocationRepository is responsible for defining users' position
+1. WeatherRepository is responsible for fetching weather info by coordinates
+1. So weather service doesn't contain field that describing city, but UI requires such info. City repository needs to get city name by coordinates.
+
+The architecture of the module in common way looks like at the scheme below.
+
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbiAgICBBWy9XZWF0aGVyIG1vZHVsZVxcXSAtLT4gTG9jYXRpb25SZXBvc2l0b3J5XG4gICAgQSAtLT4gV2VhdGhlclJlcG9zaXRvcnlcbiAgICBBIC0tPiBDaXR5UmVwb3NpdG9yeVxuICAgIExvY2F0aW9uUmVwb3NpdG9yeSAtLT4gV2VhdGhlckJsb2NcbiAgICBXZWF0aGVyUmVwb3NpdG9yeSAtLT4gV2VhdGhlckJsb2NcbiAgICBDaXR5UmVwb3NpdG9yeSAtLT4gV2VhdGhlckJsb2NcbiAgICBXZWF0aGVyQmxvYyAtLT4gUGFnZSIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0)](https://mermaid-js.github.io/mermaid-live-editor/edit##eyJjb2RlIjoiZ3JhcGggVERcbiAgICBBWy9XZWF0aGVyIG1vZHVsZVxcXSAtLT4gTG9jYXRpb25SZXBvc2l0b3J5XG4gICAgQSAtLT4gV2VhdGhlclJlcG9zaXRvcnlcbiAgICBBIC0tPiBDaXR5UmVwb3NpdG9yeVxuICAgIExvY2F0aW9uUmVwb3NpdG9yeSAtLT4gV2VhdGhlckJsb2NcbiAgICBXZWF0aGVyUmVwb3NpdG9yeSAtLT4gV2VhdGhlckJsb2NcbiAgICBDaXR5UmVwb3NpdG9yeSAtLT4gV2VhdGhlckJsb2NcbiAgICBXZWF0aGVyQmxvYyAtLT4gUGFnZVxuIiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0)
