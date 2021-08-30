@@ -12,6 +12,10 @@ void main() {
       logger: ProductionLogger(),
       title: 'ENV Flutter application template with Bloc state manager',
       debugOptions: DebugOptions(),
+      weatherApiKey:
+          'Generate your own api key here https://openweathermap.org/api/one-call-api',
+      cityApiKey:
+          'Generate your own api key here https://developer.tomtom.com/',
     ),
   );
 
