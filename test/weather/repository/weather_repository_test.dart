@@ -1,4 +1,9 @@
 import 'package:cl_weather_app/common/api.dart';
+import 'package:cl_weather_app/common/env/build_types.dart';
+import 'package:cl_weather_app/common/env/config.dart';
+import 'package:cl_weather_app/common/env/debug_options.dart';
+import 'package:cl_weather_app/common/env/environment.dart';
+import 'package:cl_weather_app/common/logger/logger.dart';
 import 'package:cl_weather_app/weather/bloc/repositories/weather_repository.dart';
 import 'package:cl_weather_app/weather/models/daily_temperature.dart';
 import 'package:cl_weather_app/weather/models/daily_weather.dart';
@@ -13,7 +18,7 @@ import 'package:mockito/mockito.dart';
 
 import 'weather_repository_test.mocks.dart';
 
-@GenerateMocks([Dio])
+@GenerateMocks([Dio, DebugOptions, Logger])
 void main() {
   group('TestWeatherRepository', () {
     late MockDio dio;
@@ -63,6 +68,15 @@ void main() {
     setUp(() {
       dio = MockDio();
       repository = WeatherRepository(dio);
+      Environment.init(
+        buildType: BuildType.dev,
+        config: Config(
+          logger: MockLogger(),
+          debugOptions: MockDebugOptions(),
+          cityApiKey: '',
+          weatherApiKey: '',
+        ),
+      );
     });
 
     test('Check successful response', () async {
