@@ -31,13 +31,13 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     return WeatherInfoUI(
       city: cityName,
       currentTemp: weather.current.temp.round().toString(),
-      maxTemp: weather.daily[0].temp.max.round().toString(),
-      minTemp: weather.daily[0].temp.min.round().toString(),
+      maxTemp: weather.daily.first.temp.max.round().toString(),
+      minTemp: weather.daily.first.temp.min.round().toString(),
       humidity: weather.current.humidity.toString(),
       pressure: weather.current.pressure.toString(),
       visibility: (weather.current.visibility / 1000.0).toString(),
       wind: weather.current.windSpeed.toString(),
-      weatherDescription: weather.current.weatherDescription[0].description,
+      weatherDescription: weather.current.weatherDescription.first.description,
       sunrise: weather.current.sunrise,
       sunset: weather.current.sunset,
     );
@@ -52,15 +52,13 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
 
   Stream<WeatherState> _mapWeatherInitialed(WeatherInitialed event) async* {
     try {
-      final location = await _locationRepository.fetchWithAskPermission();
-      final city = await _cityRepository.getCityNameByPosition(
-        location.latitude.toString(),
-        location.longitude.toString(),
-      );
+      final position = await _locationRepository.fetchWithAskPermission();
+      final city = await _cityRepository.getCityNameByPosition(position);
+
       final weather = await _weatherRepository.getWeatherInfoByPosition(
-        location.latitude.toString(),
-        location.longitude.toString(),
+        position,
       );
+
       yield WeatherState.loaded(
         weatherInfo: _getUiWeatherInfo(city, weather),
       );

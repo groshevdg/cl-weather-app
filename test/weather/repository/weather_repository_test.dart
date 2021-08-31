@@ -5,14 +5,15 @@ import 'package:cl_weather_app/common/env/debug_options.dart';
 import 'package:cl_weather_app/common/env/environment.dart';
 import 'package:cl_weather_app/common/logger/logger.dart';
 import 'package:cl_weather_app/weather/bloc/repositories/weather_repository.dart';
-import 'package:cl_weather_app/weather/models/daily_temperature.dart';
-import 'package:cl_weather_app/weather/models/daily_weather.dart';
-import 'package:cl_weather_app/weather/models/primary_weather_info.dart';
-import 'package:cl_weather_app/weather/models/weather_description.dart';
+import 'package:cl_weather_app/weather/models/daily_temperature_response.dart';
+import 'package:cl_weather_app/weather/models/daily_weather_response.dart';
+import 'package:cl_weather_app/weather/models/primary_weather_info_response.dart';
+import 'package:cl_weather_app/weather/models/weather_description_response.dart';
 import 'package:cl_weather_app/weather/models/weather_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -24,20 +25,33 @@ void main() {
     late MockDio dio;
     late WeatherRepository repository;
 
+    final position = Position(
+      longitude: 10.00,
+      latitude: 10.00,
+      timestamp: DateTime.now(),
+      accuracy: 0,
+      altitude: 0,
+      heading: 0,
+      speed: 0,
+      speedAccuracy: 0,
+    );
+
     final weather = WeatherResponse(
-      current: PrimaryWeatherInfo(
+      current: PrimaryWeatherInfoResponse(
         visibility: 10000,
         pressure: 1000,
         humidity: 10.0,
         temp: 25,
         windSpeed: 8,
         weatherDescription: const [
-          WeatherDescription(description: 'description'),
+          WeatherDescriptionResponse(description: 'description'),
         ],
         sunset: TimeOfDay.fromDateTime(DateTime.now()),
         sunrise: TimeOfDay.fromDateTime(DateTime.now()),
       ),
-      daily: const [DailyWeather(temp: DailyTemperature(min: 10, max: 30))],
+      daily: const [
+        DailyWeatherResponse(temp: DailyTemperatureResponse(min: 10, max: 30))
+      ],
     );
 
     final weatherResponse = Response(
@@ -83,8 +97,7 @@ void main() {
       when(dio.get<Map<String, dynamic>>(Api.weatherInfo('10.0', '10.0', '')))
           .thenAnswer((_) async => weatherResponse);
 
-      final response =
-          await repository.getWeatherInfoByPosition('10.0', '10.0');
+      final response = await repository.getWeatherInfoByPosition(position);
 
       expect(response, equals(weather));
     });

@@ -1,4 +1,4 @@
-import 'package:cl_weather_app/weather/models/addresses.dart';
+import 'package:cl_weather_app/weather/models/address_list_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'city_response.g.dart';
@@ -10,5 +10,5 @@ class CityResponse {
   factory CityResponse.fromJson(Map<String, dynamic> json) =>
       _$CityResponseFromJson(json);
 
-  final List<Addresses> addresses;
+  final List<AddressListResponse> addresses;
 }

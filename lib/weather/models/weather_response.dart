@@ -1,5 +1,5 @@
-import 'package:cl_weather_app/weather/models/daily_weather.dart';
-import 'package:cl_weather_app/weather/models/primary_weather_info.dart';
+import 'package:cl_weather_app/weather/models/daily_weather_response.dart';
+import 'package:cl_weather_app/weather/models/primary_weather_info_response.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -12,8 +12,8 @@ class WeatherResponse extends Equatable {
   factory WeatherResponse.fromJson(Map<String, dynamic> json) =>
       _$WeatherResponseFromJson(json);
 
-  final PrimaryWeatherInfo current;
-  final List<DailyWeather> daily;
+  final PrimaryWeatherInfoResponse current;
+  final List<DailyWeatherResponse> daily;
 
   @override
   List<Object?> get props => [current, daily];

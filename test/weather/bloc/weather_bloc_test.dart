@@ -6,11 +6,11 @@ import 'package:cl_weather_app/weather/bloc/repositories/weather_repository.dart
 import 'package:cl_weather_app/weather/bloc/weather_bloc.dart';
 import 'package:cl_weather_app/weather/bloc/weather_event.dart';
 import 'package:cl_weather_app/weather/bloc/weather_state.dart';
-import 'package:cl_weather_app/weather/models/daily_temperature.dart';
-import 'package:cl_weather_app/weather/models/daily_weather.dart';
+import 'package:cl_weather_app/weather/models/daily_temperature_response.dart';
+import 'package:cl_weather_app/weather/models/daily_weather_response.dart';
 import 'package:cl_weather_app/weather/models/permission_exception.dart';
-import 'package:cl_weather_app/weather/models/primary_weather_info.dart';
-import 'package:cl_weather_app/weather/models/weather_description.dart';
+import 'package:cl_weather_app/weather/models/primary_weather_info_response.dart';
+import 'package:cl_weather_app/weather/models/weather_description_response.dart';
 import 'package:cl_weather_app/weather/models/weather_info_ui.dart';
 import 'package:cl_weather_app/weather/models/weather_response.dart';
 import 'package:flutter/material.dart';
@@ -35,9 +35,11 @@ void main() {
     late MockCityRepository cityRepository;
     late WeatherBloc bloc;
 
-    final location = Position(
-      longitude: 10.00,
-      latitude: 10.00,
+    const city = 'expectedCityName';
+
+    final position = Position(
+      longitude: 0,
+      latitude: 0,
       timestamp: DateTime.now(),
       accuracy: 0,
       altitude: 0,
@@ -45,8 +47,6 @@ void main() {
       speed: 0,
       speedAccuracy: 0,
     );
-
-    const city = 'expectedCityName';
 
     const uiWeatherInfo = WeatherInfoUI(
       weatherDescription: 'cloud',
@@ -77,7 +77,7 @@ void main() {
     );
 
     const weather = WeatherResponse(
-      current: PrimaryWeatherInfo(
+      current: PrimaryWeatherInfoResponse(
         sunrise: TimeOfDay(hour: 5, minute: 0),
         sunset: TimeOfDay(hour: 19, minute: 0),
         visibility: 10000,
@@ -85,12 +85,12 @@ void main() {
         humidity: 20,
         temp: 25,
         windSpeed: 8,
-        weatherDescription: <WeatherDescription>[
-          WeatherDescription(description: 'cloud'),
+        weatherDescription: <WeatherDescriptionResponse>[
+          WeatherDescriptionResponse(description: 'cloud'),
         ],
       ),
-      daily: <DailyWeather>[
-        DailyWeather(temp: DailyTemperature(max: 30, min: 20)),
+      daily: <DailyWeatherResponse>[
+        DailyWeatherResponse(temp: DailyTemperatureResponse(max: 30, min: 20)),
       ],
     );
 
@@ -111,15 +111,11 @@ void main() {
       'Check successful load weather info',
       build: () {
         when(locationRepository.fetchWithAskPermission())
-            .thenAnswer((_) async => location);
-        when(cityRepository.getCityNameByPosition(
-          location.latitude.toString(),
-          location.longitude.toString(),
-        )).thenAnswer((_) async => city);
-        when(weatherRepository.getWeatherInfoByPosition(
-          location.latitude.toString(),
-          location.longitude.toString(),
-        )).thenAnswer((_) async => weather);
+            .thenAnswer((_) async => position);
+        when(cityRepository.getCityNameByPosition(position))
+            .thenAnswer((_) async => city);
+        when(weatherRepository.getWeatherInfoByPosition(position))
+            .thenAnswer((_) async => weather);
         return bloc;
       },
       act: (bloc) => bloc.add(WeatherInitialed()),
@@ -129,18 +125,14 @@ void main() {
     );
 
     blocTest<WeatherBloc, WeatherState>(
-      'Check user disabled location translation error',
+      'Check user disabled position translation error',
       build: () {
         when(locationRepository.fetchWithAskPermission())
             .thenThrow(PermissionException());
-        when(cityRepository.getCityNameByPosition(
-          location.latitude.toString(),
-          location.longitude.toString(),
-        )).thenAnswer((_) async => city);
-        when(weatherRepository.getWeatherInfoByPosition(
-          location.latitude.toString(),
-          location.longitude.toString(),
-        )).thenAnswer((_) async => weather);
+        when(cityRepository.getCityNameByPosition(position))
+            .thenAnswer((_) async => city);
+        when(weatherRepository.getWeatherInfoByPosition(position))
+            .thenAnswer((_) async => weather);
         return bloc;
       },
       act: (bloc) => bloc.add(WeatherInitialed()),
@@ -151,15 +143,11 @@ void main() {
       'Check loading data error',
       build: () {
         when(locationRepository.fetchWithAskPermission())
-            .thenAnswer((_) async => location);
-        when(cityRepository.getCityNameByPosition(
-          location.latitude.toString(),
-          location.longitude.toString(),
-        )).thenThrow(Exception());
-        when(weatherRepository.getWeatherInfoByPosition(
-          location.latitude.toString(),
-          location.longitude.toString(),
-        )).thenAnswer((_) async => weather);
+            .thenAnswer((_) async => position);
+        when(cityRepository.getCityNameByPosition(position))
+            .thenThrow(Exception());
+        when(weatherRepository.getWeatherInfoByPosition(position))
+            .thenAnswer((_) async => weather);
         return bloc;
       },
       act: (bloc) => bloc.add(WeatherInitialed()),
@@ -170,15 +158,11 @@ void main() {
       'Check null city name',
       build: () {
         when(locationRepository.fetchWithAskPermission())
-            .thenAnswer((_) async => location);
-        when(cityRepository.getCityNameByPosition(
-          location.latitude.toString(),
-          location.longitude.toString(),
-        )).thenAnswer((_) async => null);
-        when(weatherRepository.getWeatherInfoByPosition(
-          location.latitude.toString(),
-          location.longitude.toString(),
-        )).thenAnswer((_) async => weather);
+            .thenAnswer((_) async => position);
+        when(cityRepository.getCityNameByPosition(position))
+            .thenAnswer((_) async => null);
+        when(weatherRepository.getWeatherInfoByPosition(position))
+            .thenAnswer((_) async => weather);
         return bloc;
       },
       act: (bloc) => bloc.add(WeatherInitialed()),

@@ -1,13 +1,13 @@
-import 'package:cl_weather_app/weather/models/weather_description.dart';
+import 'package:cl_weather_app/weather/models/weather_description_response.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'primary_weather_info.g.dart';
+part 'primary_weather_info_response.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, createToJson: false)
-class PrimaryWeatherInfo extends Equatable {
-  const PrimaryWeatherInfo({
+class PrimaryWeatherInfoResponse extends Equatable {
+  const PrimaryWeatherInfoResponse({
     required this.sunrise,
     required this.sunset,
     required this.temp,
@@ -18,8 +18,8 @@ class PrimaryWeatherInfo extends Equatable {
     required this.weatherDescription,
   });
 
-  factory PrimaryWeatherInfo.fromJson(Map<String, dynamic> json) =>
-      _$PrimaryWeatherInfoFromJson(json);
+  factory PrimaryWeatherInfoResponse.fromJson(Map<String, dynamic> json) =>
+      _$PrimaryWeatherInfoResponseFromJson(json);
 
   @JsonKey(fromJson: _formatSecondsToTimeOfDay)
   final TimeOfDay sunrise;
@@ -28,7 +28,7 @@ class PrimaryWeatherInfo extends Equatable {
   final TimeOfDay sunset;
 
   @JsonKey(name: 'weather')
-  final List<WeatherDescription> weatherDescription;
+  final List<WeatherDescriptionResponse> weatherDescription;
 
   final double temp;
   final double humidity;

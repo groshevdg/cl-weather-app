@@ -3,22 +3,28 @@ import 'package:cl_weather_app/common/env/config.dart';
 import 'package:cl_weather_app/common/env/environment.dart';
 import 'package:cl_weather_app/weather/models/city_response.dart';
 import 'package:dio/dio.dart';
+import 'package:geolocator/geolocator.dart';
 
 class CityRepository {
   CityRepository(this._dio);
 
   final Dio _dio;
 
-  Future<String?> getCityNameByPosition(
-    String latitude,
-    String longitude,
-  ) async {
-    final apiKey = Environment<Config>.instance().config.cityApiKey;
+  Future<String?> getCityNameByPosition(Position position) async {
     final response = await _dio.get<Map<String, dynamic>>(
-      Api.cityName(latitude, longitude, apiKey),
+      Api.cityName(
+        position.latitude.toString(),
+        position.longitude.toString(),
+        Environment<Config>.instance().config.cityApiKey,
+      ),
     );
 
     final cityResponse = CityResponse.fromJson(response.data!);
-    return cityResponse.addresses[0].address.municipality;
+
+    if (cityResponse.addresses.isNotEmpty) {
+      return cityResponse.addresses.first.address?.municipality;
+    } else {
+      return null;
+    }
   }
 }

@@ -7,6 +7,7 @@ import 'package:cl_weather_app/common/logger/logger.dart';
 import 'package:cl_weather_app/weather/bloc/repositories/city_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -16,6 +17,17 @@ import 'city_repository_test.mocks.dart';
 void main() {
   late MockDio dio;
   late CityRepository cityRepository;
+
+  final position = Position(
+    longitude: 10.00,
+    latitude: 10.00,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+  );
 
   final response = Response(
     requestOptions: RequestOptions(path: Api.cityName('10.0', '10.0', '')),
@@ -58,7 +70,7 @@ void main() {
       when(dio.get<Map<String, dynamic>>(Api.cityName('10.0', '10.0', '')))
           .thenAnswer((_) async => response);
 
-      final city = await cityRepository.getCityNameByPosition('10.0', '10.0');
+      final city = await cityRepository.getCityNameByPosition(position);
 
       expect(city, 'cityName');
     });
@@ -67,7 +79,7 @@ void main() {
       when(dio.get<Map<String, dynamic>>(Api.cityName('10.0', '10.0', '')))
           .thenAnswer((_) async => notValidResponse);
 
-      final city = await cityRepository.getCityNameByPosition('10.0', '10.0');
+      final city = await cityRepository.getCityNameByPosition(position);
 
       expect(city, null);
     });
