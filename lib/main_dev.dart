@@ -8,19 +8,20 @@ import 'package:cl_weather_app/common/runner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  Environment.init(
-    buildType: BuildType.dev,
-    config: Config(
-      logger: DevLogger(),
-      debugOptions: DebugOptions(),
-      weatherApiKey:
-          'Generate your own api key here https://openweathermap.org/api/one-call-api',
-      cityApiKey:
-          'Generate your own api key here https://developer.tomtom.com/',
+  BlocOverrides.runZoned(
+    () => Environment.init(
+      buildType: BuildType.dev,
+      config: Config(
+        logger: DevLogger(),
+        debugOptions: DebugOptions(),
+        weatherApiKey:
+            'Generate your own api key here https://openweathermap.org/api/one-call-api',
+        cityApiKey:
+            'Generate your own api key here https://developer.tomtom.com/',
+      ),
     ),
+    blocObserver: DebugBlocObserver(),
   );
-
-  Bloc.observer = DebugBlocObserver();
 
   run();
 }
