@@ -118,7 +118,7 @@ void main() {
             .thenAnswer((_) async => weather);
         return bloc;
       },
-      act: (bloc) => bloc.add(WeatherInitialed()),
+      act: (bloc) => bloc.add(const WeatherInitialed()),
       expect: () => <WeatherState>[
         const WeatherState.loaded(weatherInfo: uiWeatherInfo),
       ],
@@ -135,7 +135,7 @@ void main() {
             .thenAnswer((_) async => weather);
         return bloc;
       },
-      act: (bloc) => bloc.add(WeatherInitialed()),
+      act: (bloc) => bloc.add(const WeatherInitialed()),
       expect: () => <WeatherState>[const WeatherState.locationDisabled()],
     );
 
@@ -150,7 +150,7 @@ void main() {
             .thenAnswer((_) async => weather);
         return bloc;
       },
-      act: (bloc) => bloc.add(WeatherInitialed()),
+      act: (bloc) => bloc.add(const WeatherInitialed()),
       expect: () => <WeatherState>[const WeatherState.error()],
     );
 
@@ -165,7 +165,7 @@ void main() {
             .thenAnswer((_) async => weather);
         return bloc;
       },
-      act: (bloc) => bloc.add(WeatherInitialed()),
+      act: (bloc) => bloc.add(const WeatherInitialed()),
       expect: () => <WeatherState>[
         const WeatherState.loaded(weatherInfo: uiWeatherInfoUnknownCity),
       ],

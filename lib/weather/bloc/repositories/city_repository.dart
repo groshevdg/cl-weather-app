@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
 
 class CityRepository {
-  CityRepository(this._dio);
+  const CityRepository(this._dio);
 
   final Dio _dio;
 

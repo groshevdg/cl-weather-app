@@ -1,8 +1,6 @@
 import 'package:cl_weather_app/weather/models/weather_info_ui.dart';
 import 'package:equatable/equatable.dart';
 
-enum WeatherStatus { initial, loaded, locationDisabled, error }
-
 class WeatherState extends Equatable {
   const WeatherState._({
     required this.status,
@@ -25,3 +23,5 @@ class WeatherState extends Equatable {
   @override
   List<Object?> get props => [status, weatherInfo];
 }
+
+enum WeatherStatus { initial, loaded, locationDisabled, error }

@@ -20,7 +20,9 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         _weatherRepository = weatherRepository,
         _locationRepository = locationRepository,
         _cityRepository = cityRepository,
-        super(const WeatherState.initial());
+        super(const WeatherState.initial()) {
+    on<WeatherInitialed>(_onWeatherInitialed);
+  }
 
   final ErrorHandlerBloc _errorHandlerBloc;
   final WeatherRepository _weatherRepository;
@@ -43,14 +45,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     );
   }
 
-  @override
-  Stream<WeatherState> mapEventToState(WeatherEvent event) async* {
-    if (event is WeatherInitialed) {
-      yield* _mapWeatherInitialed(event);
-    }
-  }
-
-  Stream<WeatherState> _mapWeatherInitialed(WeatherInitialed event) async* {
+  Future<void> _onWeatherInitialed(WeatherInitialed event, Emitter emit) async {
     try {
       final position = await _locationRepository.fetchWithAskPermission();
       final city = await _cityRepository.getCityNameByPosition(position);
@@ -59,15 +54,15 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         position,
       );
 
-      yield WeatherState.loaded(
+      emit(WeatherState.loaded(
         weatherInfo: _getUiWeatherInfo(city, weather),
-      );
+      ));
     } on Exception catch (e, s) {
       if (e is PermissionException) {
-        yield const WeatherState.locationDisabled();
+        emit(const WeatherState.locationDisabled());
       } else {
         _errorHandlerBloc.add(HandleErrorEvent(e, s));
-        yield const WeatherState.error();
+        emit(const WeatherState.error());
       }
     }
   }

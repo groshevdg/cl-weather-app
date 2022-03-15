@@ -32,7 +32,7 @@ class App extends StatelessWidget {
                 weatherRepository: getIt<WeatherRepository>(),
                 locationRepository: getIt<LocationRepository>(),
                 cityRepository: getIt<CityRepository>())
-              ..add(WeatherInitialed()),
+              ..add(const WeatherInitialed()),
           ),
         ],
         child: const AnnotatedRegion<SystemUiOverlayStyle>(
