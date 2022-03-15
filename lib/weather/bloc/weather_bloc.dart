@@ -7,7 +7,6 @@ import 'package:cl_weather_app/weather/bloc/weather_event.dart';
 import 'package:cl_weather_app/weather/bloc/weather_state.dart';
 import 'package:cl_weather_app/weather/models/permission_exception.dart';
 import 'package:cl_weather_app/weather/models/weather_info_ui.dart';
-import 'package:cl_weather_app/weather/models/weather_response.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
@@ -29,22 +28,6 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   final LocationRepository _locationRepository;
   final CityRepository _cityRepository;
 
-  WeatherInfoUI _getUiWeatherInfo(String? cityName, WeatherResponse weather) {
-    return WeatherInfoUI(
-      city: cityName,
-      currentTemp: weather.current.temp.round().toString(),
-      maxTemp: weather.daily.first.temp.max.round().toString(),
-      minTemp: weather.daily.first.temp.min.round().toString(),
-      humidity: weather.current.humidity.toString(),
-      pressure: weather.current.pressure.toString(),
-      visibility: (weather.current.visibility / 1000.0).toString(),
-      wind: weather.current.windSpeed.toString(),
-      weatherDescription: weather.current.weatherDescription.first.description,
-      sunrise: weather.current.sunrise,
-      sunset: weather.current.sunset,
-    );
-  }
-
   Future<void> _onWeatherInitialed(WeatherInitialed event, Emitter emit) async {
     try {
       final position = await _locationRepository.fetchWithAskPermission();
@@ -55,7 +38,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       );
 
       emit(WeatherState.loaded(
-        weatherInfo: _getUiWeatherInfo(city, weather),
+        weatherInfo: WeatherInfoUI.fromResponse(city, weather),
       ));
     } on Exception catch (e, s) {
       if (e is PermissionException) {
