@@ -1,8 +1,8 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cl_weather_app/common/bloc/error_handler_bloc/error_handler_event.dart';
 import 'package:cl_weather_app/common/bloc/error_handler_bloc/error_handler_state.dart';
 import 'package:cl_weather_app/common/logger/logger.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ErrorHandlerBloc extends Bloc<ErrorHandlerEvent, ErrorHandlerState> {
   ErrorHandlerBloc({required Logger logger})
