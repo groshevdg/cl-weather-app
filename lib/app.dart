@@ -29,11 +29,11 @@ class App extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => WeatherBloc(
-                errorHandlerBloc: context.read<ErrorHandlerBloc>(),
-                weatherRepository: getIt<WeatherRepository>(),
-                locationRepository: getIt<LocationRepository>(),
-                cityRepository: getIt<CityRepository>())
-              ..add(const WeatherInitialed()),
+              errorHandlerBloc: context.read<ErrorHandlerBloc>(),
+              weatherRepository: getIt<WeatherRepository>(),
+              locationRepository: getIt<LocationRepository>(),
+              cityRepository: getIt<CityRepository>(),
+            )..add(const WeatherInitialed()),
           ),
         ],
         child: const AnnotatedRegion<SystemUiOverlayStyle>(

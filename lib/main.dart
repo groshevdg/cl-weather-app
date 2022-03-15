@@ -1,4 +1,4 @@
-import 'package:cl_weather_app/common/env/build_types.dart';
+import 'package:cl_weather_app/common/env/build_type.dart';
 import 'package:cl_weather_app/common/env/config.dart';
 import 'package:cl_weather_app/common/env/debug_options.dart';
 import 'package:cl_weather_app/common/env/environment.dart';

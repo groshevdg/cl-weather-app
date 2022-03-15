@@ -181,7 +181,7 @@ class WeatherPage extends StatelessWidget {
                         asset: AppAssets.sunset,
                         title: 'Sunset',
                         value: state.weatherInfo.sunset.format(context),
-                      )
+                      ),
                     ],
                   ),
                   const Spacer(),

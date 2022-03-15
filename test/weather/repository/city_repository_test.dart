@@ -1,5 +1,5 @@
 import 'package:cl_weather_app/common/api.dart';
-import 'package:cl_weather_app/common/env/build_types.dart';
+import 'package:cl_weather_app/common/env/build_type.dart';
 import 'package:cl_weather_app/common/env/config.dart';
 import 'package:cl_weather_app/common/env/debug_options.dart';
 import 'package:cl_weather_app/common/env/environment.dart';
@@ -34,9 +34,9 @@ void main() {
     data: <String, dynamic>{
       'addresses': [
         <String, dynamic>{
-          'address': <String, dynamic>{'municipality': 'cityName'}
-        }
-      ]
+          'address': <String, dynamic>{'municipality': 'cityName'},
+        },
+      ],
     },
   );
 
@@ -45,9 +45,9 @@ void main() {
     data: <String, dynamic>{
       'addresses': [
         <String, dynamic>{
-          'address': <String, dynamic>{'': ''}
-        }
-      ]
+          'address': <String, dynamic>{'': ''},
+        },
+      ],
     },
   );
 
