@@ -13,6 +13,7 @@ import 'package:cl_weather_app/weather/weather_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -43,16 +44,21 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      showPerformanceOverlay: _debug.showPerformanceOverlay,
-      debugShowMaterialGrid: _debug.debugShowMaterialGrid,
-      checkerboardRasterCacheImages: _debug.checkerboardRasterCacheImages,
-      checkerboardOffscreenLayers: _debug.checkerboardOffscreenLayers,
-      showSemanticsDebugger: _debug.showSemanticsDebugger,
-      debugShowCheckedModeBanner: _debug.debugShowCheckedModeBanner,
-      home: _home(),
-      title: 'Weather App',
-      theme: lightTheme,
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      splitScreenMode: true,
+      minTextAdapt: true,
+      builder: () => MaterialApp(
+        showPerformanceOverlay: _debug.showPerformanceOverlay,
+        debugShowMaterialGrid: _debug.debugShowMaterialGrid,
+        checkerboardRasterCacheImages: _debug.checkerboardRasterCacheImages,
+        checkerboardOffscreenLayers: _debug.checkerboardOffscreenLayers,
+        showSemanticsDebugger: _debug.showSemanticsDebugger,
+        debugShowCheckedModeBanner: _debug.debugShowCheckedModeBanner,
+        home: _home(),
+        title: 'Weather App',
+        theme: lightTheme,
+      ),
     );
   }
 }

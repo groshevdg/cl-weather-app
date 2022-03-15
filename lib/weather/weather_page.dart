@@ -5,6 +5,7 @@ import 'package:cl_weather_app/weather/bloc/weather_bloc.dart';
 import 'package:cl_weather_app/weather/bloc/weather_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -14,14 +15,20 @@ class WeatherPage extends StatelessWidget {
   void _blocListener(BuildContext context, WeatherState state) {
     if (state.status == WeatherStatus.locationDisabled) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Enable location service to get weather info'),
+        SnackBar(
+          content: Text(
+            'Enable location service to get weather info',
+            style: TextStyle(fontSize: 14.sp),
+          ),
         ),
       );
     } else if (state.status == WeatherStatus.error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('An error happened while loading data'),
+        SnackBar(
+          content: Text(
+            'An error happened while loading data',
+            style: TextStyle(fontSize: 14.sp),
+          ),
         ),
       );
     }
@@ -32,29 +39,34 @@ class WeatherPage extends StatelessWidget {
     required String title,
     required String value,
   }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      decoration: const BoxDecoration(
-        color: AppColors.containerBackground,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SvgPicture.asset(asset, width: 25, color: AppColors.iconOverlay),
-          Text(
-            title,
-            style: const TextStyle(
-              color: AppColors.iconOverlay,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 24.h),
+        margin: EdgeInsets.symmetric(horizontal: 4.w),
+        decoration: BoxDecoration(
+          color: AppColors.containerBackground,
+          borderRadius: BorderRadius.all(Radius.circular(20.r)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SvgPicture.asset(asset, width: 25.w, color: AppColors.iconOverlay),
+            SizedBox(height: 8.h),
+            Text(
+              title,
+              style: TextStyle(
+                color: AppColors.iconOverlay,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          Text(
-            value,
-            style: const TextStyle(color: AppColors.iconOverlay, fontSize: 13),
-          ),
-        ],
+            SizedBox(height: 12.h),
+            Text(
+              value,
+              style: TextStyle(color: AppColors.iconOverlay, fontSize: 12.sp),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -63,7 +75,7 @@ class WeatherPage extends StatelessWidget {
     return Column(
       children: [
         Text(title, style: AppTextStyles.regularTextStyle),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         Text(value, style: AppTextStyles.regularTextStyle),
       ],
     );
@@ -77,7 +89,7 @@ class WeatherPage extends StatelessWidget {
         child: BlocConsumer<WeatherBloc, WeatherState>(
           listener: _blocListener,
           builder: (context, state) => Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             width: double.infinity,
             height: double.infinity,
             decoration: const BoxDecoration(
@@ -100,17 +112,19 @@ class WeatherPage extends StatelessWidget {
                           state.weatherInfo.city ?? 'Unknown',
                           style: AppTextStyles.boldTextStyle,
                         ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Text(
                     '${state.weatherInfo.currentTemp}°',
-                    style: AppTextStyles.boldTextStyle.copyWith(fontSize: 80),
+                    style: AppTextStyles.boldTextStyle.copyWith(
+                      fontSize: 80.sp,
+                    ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Text(
                     state.weatherInfo.weatherDescription,
                     style: AppTextStyles.regularTextStyle,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -118,14 +132,14 @@ class WeatherPage extends StatelessWidget {
                         'H: ${state.weatherInfo.maxTemp}°',
                         style: AppTextStyles.regularTextStyle,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(height: 8.h),
                       Text(
                         'M: ${state.weatherInfo.minTemp}°',
                         style: AppTextStyles.regularTextStyle,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -134,9 +148,9 @@ class WeatherPage extends StatelessWidget {
                         value: '${state.weatherInfo.humidity}%',
                       ),
                       Container(
-                        width: 1.5,
+                        width: 1.5.w,
                         color: AppColors.iconOverlay,
-                        height: 40,
+                        height: 40.h,
                       ),
                       _mainInfoRowItem(
                         title: 'Visibility',
@@ -144,34 +158,31 @@ class WeatherPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 30),
-                  Expanded(
-                    child: GridView.count(
-                      childAspectRatio: 0.75,
-                      crossAxisCount: 4,
-                      children: [
-                        _additionalInfoWidget(
-                          asset: AppAssets.sunrise,
-                          title: 'Sunrise',
-                          value: state.weatherInfo.sunrise.format(context),
-                        ),
-                        _additionalInfoWidget(
-                          asset: AppAssets.wind,
-                          title: 'Wind',
-                          value: '${state.weatherInfo.wind} m/s',
-                        ),
-                        _additionalInfoWidget(
-                          asset: AppAssets.pressure,
-                          title: 'Pressure',
-                          value: state.weatherInfo.pressure,
-                        ),
-                        _additionalInfoWidget(
-                          asset: AppAssets.sunset,
-                          title: 'Sunset',
-                          value: state.weatherInfo.sunset.format(context),
-                        )
-                      ],
-                    ),
+                  SizedBox(height: 30.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _additionalInfoWidget(
+                        asset: AppAssets.sunrise,
+                        title: 'Sunrise',
+                        value: state.weatherInfo.sunrise.format(context),
+                      ),
+                      _additionalInfoWidget(
+                        asset: AppAssets.wind,
+                        title: 'Wind',
+                        value: '${state.weatherInfo.wind} m/s',
+                      ),
+                      _additionalInfoWidget(
+                        asset: AppAssets.pressure,
+                        title: 'Pressure',
+                        value: state.weatherInfo.pressure,
+                      ),
+                      _additionalInfoWidget(
+                        asset: AppAssets.sunset,
+                        title: 'Sunset',
+                        value: state.weatherInfo.sunset.format(context),
+                      )
+                    ],
                   ),
                   const Spacer(),
                 ],

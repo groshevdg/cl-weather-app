@@ -19,6 +19,8 @@ dependencies:
   permission_handler: 9.2.0
   geolocator: 8.2.0
   json_annotation: 4.4.0
+  flutter_screenutil: 5.3.1
+
 
 dev_dependencies:
   flutter_test:
