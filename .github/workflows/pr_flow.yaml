@@ -1,0 +1,36 @@
+name: Pull-Request flow
+
+on:
+  pull_request:
+    branches-ignore:
+      - dev
+      - stage
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Check code build ability
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout branch
+
+      - uses: actions/setup-java@v2
+        name: Setup Java
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - uses: subosito/flutter-action@v1
+        name: Setup Flutter
+        with:
+          flutter-version: '2.5.0'
+
+      - name: Get dependecnies
+        run: flutter pub get
+
+      - name: Check code generation
+        run: flutter pub run build_runner build
+
+      - name: Check tests
+        run: flutter test
+
+
