@@ -1,4 +1,4 @@
-name: Test
+name: Test Flow
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    name: Test
+    name: Check code
     runs-on: ubuntu-latest
 
     steps:
