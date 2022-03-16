@@ -16,15 +16,24 @@ dart_code_metrics:
     - maximum-nesting-level: 5
   metrics-exclude:
     - 'test/**'
+    - 'lib/common/routes_factory.dart'
   rules:
-    - always-remove-listener
-    - no-boolean-literal-compare
-    - prefer-trailing-comma
-    - no-equal-then-else
+    - avoid-unnecessary-setstate
+    - prefer-extracting-callbacks
+    - prefer-single-widget-per-file:
+        ignore-private-widgets: true
+    - always-remove-listener:
+        severity: error
+    - no-boolean-literal-compare:
+        severity: error
+    - prefer-trailing-comma:
+        severity: error
+    - no-equal-then-else:
+        severity: error
     - prefer-match-file-name:
+        severity: error
         exclude:
           - 'test/**'
-
 linter:
   rules:
     # Const rules.
