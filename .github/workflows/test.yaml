@@ -37,3 +37,6 @@ jobs:
 
       - name: 'Tests'
         run: flutter test
+
+      - name: 'Dart Code Metrics'
+        run: flutter pub run dart_code_metrics:metrics analyze lib
