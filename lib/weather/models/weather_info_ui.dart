@@ -1,3 +1,4 @@
+import 'package:cl_weather_app/weather/models/weather_response.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,25 @@ class WeatherInfoUI extends Equatable {
     this.sunrise = const TimeOfDay(hour: 0, minute: 0),
     this.sunset = const TimeOfDay(hour: 0, minute: 0),
   });
+
+  factory WeatherInfoUI.fromResponse(
+    String? cityName,
+    WeatherResponse weather,
+  ) {
+    return WeatherInfoUI(
+      city: cityName,
+      currentTemp: weather.current.temp.round().toString(),
+      maxTemp: weather.daily.first.temp.max.round().toString(),
+      minTemp: weather.daily.first.temp.min.round().toString(),
+      humidity: weather.current.humidity.toString(),
+      pressure: weather.current.pressure.toString(),
+      visibility: (weather.current.visibility / 1000.0).toString(),
+      wind: weather.current.windSpeed.toString(),
+      weatherDescription: weather.current.weatherDescription.first.description,
+      sunrise: weather.current.sunrise,
+      sunset: weather.current.sunset,
+    );
+  }
 
   final String? city;
   final String currentTemp;

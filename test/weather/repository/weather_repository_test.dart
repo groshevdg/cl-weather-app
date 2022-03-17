@@ -1,5 +1,5 @@
 import 'package:cl_weather_app/common/api.dart';
-import 'package:cl_weather_app/common/env/build_types.dart';
+import 'package:cl_weather_app/common/env/build_type.dart';
 import 'package:cl_weather_app/common/env/config.dart';
 import 'package:cl_weather_app/common/env/debug_options.dart';
 import 'package:cl_weather_app/common/env/environment.dart';
@@ -50,7 +50,7 @@ void main() {
         sunrise: TimeOfDay.fromDateTime(DateTime.now()),
       ),
       daily: const [
-        DailyWeatherResponse(temp: DailyTemperatureResponse(min: 10, max: 30))
+        DailyWeatherResponse(temp: DailyTemperatureResponse(min: 10, max: 30)),
       ],
     );
 
@@ -66,15 +66,15 @@ void main() {
           'pressure': 1000,
           'visibility': 10000,
           'weather': [
-            <String, dynamic>{'description': 'description'}
+            <String, dynamic>{'description': 'description'},
           ],
           'sunrise': DateTime.now().millisecondsSinceEpoch ~/ 1000,
           'sunset': DateTime.now().millisecondsSinceEpoch ~/ 1000,
         },
         'daily': [
           <String, dynamic>{
-            'temp': <String, dynamic>{'max': 30, 'min': 10}
-          }
+            'temp': <String, dynamic>{'max': 30, 'min': 10},
+          },
         ],
       },
     );

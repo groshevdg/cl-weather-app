@@ -1,4 +1,4 @@
-import 'package:cl_weather_app/common/env/build_types.dart';
+import 'package:cl_weather_app/common/env/build_type.dart';
 
 class Environment<T> {
   Environment._({required this.config, BuildType? buildType})
