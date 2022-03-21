@@ -1,0 +1,51 @@
+name: Upload ios build to Firebase App Distribution
+
+on:
+  push:
+    branches:
+      - upload
+
+jobs:
+  ios:
+    name: Upload ios
+    runs-on: macos-latest
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Setup Java'
+        uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+
+      - name: 'Install Flutter'
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - name: 'Get dependencies'
+        run: flutter pub get
+
+      - name: 'Code generation'
+        run: flutter pub run build_runner build
+
+      - name: 'Build IPA'
+        run: flutter build ios --release --no-codesign
+
+      - name: Sign ios build
+        uses: yukiarrr/ios-build-action@v1.5.0
+        with:
+          project-path: ios/Runner.xcodeproj
+          p12-base64: ${{ secrets.P12_BASE64 }}
+          mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
+          code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
+          team-id: ${{ secrets.TEAM_ID }}
+
+      - name: Upload ios to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: testers
+          file: build/ios/outputs/iphoneos/Runner.app
