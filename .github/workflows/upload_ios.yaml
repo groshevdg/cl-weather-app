@@ -37,6 +37,8 @@ jobs:
         uses: yukiarrr/ios-build-action@v1.5.0
         with:
           project-path: ios/Runner.xcodeproj
+          workspace-path: ios/Runner.xcworkspace
+          output-path: 'Runner.ipa'
           p12-base64: ${{ secrets.P12_BASE64 }}
           mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
           code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
@@ -45,7 +47,8 @@ jobs:
       - name: Upload ios to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
+          export-method: 'app-store'
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
           groups: testers
-          file: build/ios/outputs/iphoneos/Runner.app
+          file: Runner.ipa
