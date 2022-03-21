@@ -36,6 +36,7 @@ jobs:
       - name: Sign ios build
         uses: yukiarrr/ios-build-action@v1.5.0
         with:
+          export-method: 'app-store'
           project-path: ios/Runner.xcodeproj
           workspace-path: ios/Runner.xcworkspace
           output-path: 'Runner.ipa'
@@ -47,7 +48,6 @@ jobs:
       - name: Upload ios to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          export-method: 'app-store'
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
           groups: testers
