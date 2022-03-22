@@ -32,7 +32,19 @@ jobs:
         run: flutter pub run build_runner build
 
       - name: 'Build IPA'
-        run: flutter build ipa
+        run: flutter build ios --no-codesign
+
+      - name: Sign ios build
+        uses: yukiarrr/ios-build-action@v1.5.0
+        with:
+          export-method: 'app-store'
+          project-path: ios/Runner.xcodeproj
+          workspace-path: ios/Runner.xcworkspace
+          output-path: 'Runner.ipa'
+          p12-base64: ${{ secrets.P12_BASE64 }}
+          mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
+          code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
+          team-id: ${{ secrets.TEAM_ID }}
 
       - name: Upload ios to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
