@@ -3,7 +3,7 @@ name: Upload android build to Firebase App Distribution
 on:
   push:
     branches:
-      - upload
+      - master
 
 jobs:
   android:

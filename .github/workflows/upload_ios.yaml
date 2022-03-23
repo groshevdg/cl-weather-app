@@ -3,7 +3,7 @@ name: Upload ios build to Firebase App Distribution
 on:
   push:
     branches:
-      - upload
+      - master
 
 jobs:
   ios:
@@ -46,7 +46,7 @@ jobs:
           code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
           team-id: ${{ secrets.TEAM_ID }}
 
-      - name: Upload iPA
+      - name: Upload ipa
         uses: actions/upload-artifact@v2
         with:
           name: ios-build
@@ -54,7 +54,7 @@ jobs:
 
 
   deploy_ios:
-    name: Upload iOS to Firebase App Distribution
+    name: Upload ios to Firebase App Distribution
     needs: [ ios ]
     runs-on: ubuntu-latest
     steps:
