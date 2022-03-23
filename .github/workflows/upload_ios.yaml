@@ -1,0 +1,80 @@
+name: Upload ios build to Firebase App Distribution
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  ios:
+    name: Build ios
+    runs-on: macos-latest
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Setup Java'
+        uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+
+      - name: 'Install Flutter'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: 'Get dependencies'
+        run: flutter pub get
+
+      - name: 'Code generation'
+        run: flutter pub run build_runner build
+
+      - name: 'Build IPA'
+        run: flutter build ios --no-codesign
+
+      - name: Sign ios build
+        uses: yukiarrr/ios-build-action@v1.5.0
+        with:
+          export-method: ad-hoc
+          project-path: ios/Runner.xcodeproj
+          workspace-path: ios/Runner.xcworkspace
+          output-path: 'Runner.ipa'
+          p12-base64: ${{ secrets.P12_BASE64 }}
+          mobileprovision-base64: ${{ secrets.MOBILEPROVISION_BASE64 }}
+          code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
+          team-id: ${{ secrets.TEAM_ID }}
+
+      - name: Upload ipa
+        uses: actions/upload-artifact@v2
+        with:
+          name: ios-build
+          path: Runner.ipa
+
+
+  deploy_ios:
+    name: Upload ios to Firebase App Distribution
+    needs: [ ios ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: ios-build
+
+      - name: Upload ios to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_IOS_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: testers
+          file: Runner.ipa
