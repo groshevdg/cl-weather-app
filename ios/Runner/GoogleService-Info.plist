@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>24292692777-38u2mqa118bamj2d2cu21kb8d1ckkses.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.24292692777-38u2mqa118bamj2d2cu21kb8d1ckkses</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCaBghWiXUwzv6gzFiKEoXQCffLwEfkPLc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>24292692777</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>ru.groshevdg.clweatherapp</string>
+	<key>PROJECT_ID</key>
+	<string>cl-weather-example</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cl-weather-example.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:24292692777:ios:a92f934ab4336b8e381d38</string>
+</dict>
+</plist>
