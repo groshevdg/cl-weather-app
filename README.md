@@ -2,6 +2,7 @@
 
 1. [Architecture](doc/arch.md)
 1. [Run](doc/run.md)
+1. [CI](doc/ci.md)
 
 ## Project api keys
 

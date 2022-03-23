@@ -1,0 +1,1 @@
+This project uses Github actions as CI/CD. The code of workflows is in .github folder. There are 2 important flows - base code test on push and upload builds to Firebase App Distribution.
