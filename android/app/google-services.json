@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "24292692777",
+    "project_id": "cl-weather-example",
+    "storage_bucket": "cl-weather-example.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24292692777:android:c7834619477d10f3381d38",
+        "android_client_info": {
+          "package_name": "ru.groshevdg.clweatherapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24292692777-h40ar3qvmjf589ov9bl7m12m5p6npm8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSe4n_SPumjGDUcrORh2BYCaMk4oE9FmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24292692777-h40ar3qvmjf589ov9bl7m12m5p6npm8i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

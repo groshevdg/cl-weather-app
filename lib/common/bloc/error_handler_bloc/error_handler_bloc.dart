@@ -1,72 +1,76 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cl_weather_app/common/bloc/error_handler_bloc/error_handler_event.dart';
 import 'package:cl_weather_app/common/bloc/error_handler_bloc/error_handler_state.dart';
 import 'package:cl_weather_app/common/logger/logger.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ErrorHandlerBloc extends Bloc<ErrorHandlerEvent, ErrorHandlerState> {
-  ErrorHandlerBloc({required Logger logger})
-      : _logger = logger,
-        super(InitialErrorHandlerState());
+  ErrorHandlerBloc({
+    required Logger logger,
+  })  : _logger = logger,
+        super(InitialErrorHandlerState()) {
+    on<HandleErrorEvent>(_onHandleErrorEvent);
+  }
 
   final Logger _logger;
 
-  @override
-  Stream<ErrorHandlerState> mapEventToState(ErrorHandlerEvent event) async* {
-    if (event is HandleErrorEvent && event.error is DioError) {
-      yield* _handleDioError(event.error as DioError, event.stackTrace);
-    } else if (event is HandleErrorEvent) {
-      yield* _handleUnknownError(event.error, event.stackTrace);
+  Future<void> _onHandleErrorEvent(
+    HandleErrorEvent event,
+    Emitter emit,
+  ) async {
+    if (event.error is DioError) {
+      await _handleDioError(emit, event.error as DioError, event.stackTrace);
+    } else {
+      await _handleUnknownError(emit, event.error, event.stackTrace);
     }
   }
 
-  Stream<ErrorHandlerState> _handleDioError(
+  Future<void> _handleDioError(
+    Emitter emit,
     DioError error,
     StackTrace stackTrace,
-  ) async* {
+  ) async {
     if (error.type == DioErrorType.connectTimeout ||
         error.type == DioErrorType.receiveTimeout ||
         error.type == DioErrorType.sendTimeout) {
-      yield TimeoutErrorState();
+      emit(TimeoutErrorState());
     } else if (error.type == DioErrorType.response) {
-      yield* _handleDioResponseError(error, stackTrace);
+      await _handleDioResponseError(emit, error, stackTrace);
     } else {
-      yield* _handleUnknownError(error, stackTrace);
+      await _handleUnknownError(emit, error, stackTrace);
     }
   }
 
-  Stream<ErrorHandlerState> _handleDioResponseError(
+  Future<void> _handleDioResponseError(
+    Emitter emit,
     DioError error,
     StackTrace stackTrace,
-  ) async* {
-    final statusCode = error.response?.statusCode;
+  ) async {
+    final statusCode = error.response!.statusCode;
     switch (statusCode) {
       case 400:
-        yield ValidationErrorState();
+        emit(ValidationErrorState());
         break;
       case 403:
-        yield ForbiddenErrorState();
+        emit(ForbiddenErrorState());
         break;
       case 404:
-        yield NotFoundErrorState();
+        emit(NotFoundErrorState());
         break;
       case 500:
-        yield InternalServerErrorState();
+        emit(InternalServerErrorState());
         break;
       default:
-        yield* _handleUnknownError(error, stackTrace);
+        await _handleUnknownError(emit, error, stackTrace);
     }
   }
 
-  Stream<ErrorHandlerState> _handleUnknownError(
-    Object error,
-    StackTrace stackTrace,
-  ) async* {
+  Future<void> _handleUnknownError(Emitter emit, Object e, StackTrace s) async {
     _logger.e(
       message: 'Unknown error handled in ErrorHandlerBloc',
-      error: error,
-      stackTrace: stackTrace,
+      error: e,
+      stackTrace: s,
     );
-    yield UnknownErrorState();
+    emit(UnknownErrorState());
   }
 }

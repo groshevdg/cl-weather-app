@@ -1,5 +1,4 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:cl_weather_app/common/bloc/error_handler_bloc/error_handler_bloc.dart';
 import 'package:cl_weather_app/weather/bloc/repositories/city_repository.dart';
 import 'package:cl_weather_app/weather/bloc/repositories/location_repository.dart';
 import 'package:cl_weather_app/weather/bloc/repositories/weather_repository.dart';
@@ -19,10 +18,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../common/mocks/error_handler_bloc_mock.dart';
 import 'weather_bloc_test.mocks.dart';
 
 @GenerateMocks([
-  ErrorHandlerBloc,
   LocationRepository,
   WeatherRepository,
   CityRepository,
@@ -118,7 +117,7 @@ void main() {
             .thenAnswer((_) async => weather);
         return bloc;
       },
-      act: (bloc) => bloc.add(WeatherInitialed()),
+      act: (bloc) => bloc.add(const WeatherInitialed()),
       expect: () => <WeatherState>[
         const WeatherState.loaded(weatherInfo: uiWeatherInfo),
       ],
@@ -135,7 +134,7 @@ void main() {
             .thenAnswer((_) async => weather);
         return bloc;
       },
-      act: (bloc) => bloc.add(WeatherInitialed()),
+      act: (bloc) => bloc.add(const WeatherInitialed()),
       expect: () => <WeatherState>[const WeatherState.locationDisabled()],
     );
 
@@ -150,7 +149,7 @@ void main() {
             .thenAnswer((_) async => weather);
         return bloc;
       },
-      act: (bloc) => bloc.add(WeatherInitialed()),
+      act: (bloc) => bloc.add(const WeatherInitialed()),
       expect: () => <WeatherState>[const WeatherState.error()],
     );
 
@@ -165,7 +164,7 @@ void main() {
             .thenAnswer((_) async => weather);
         return bloc;
       },
-      act: (bloc) => bloc.add(WeatherInitialed()),
+      act: (bloc) => bloc.add(const WeatherInitialed()),
       expect: () => <WeatherState>[
         const WeatherState.loaded(weatherInfo: uiWeatherInfoUnknownCity),
       ],
